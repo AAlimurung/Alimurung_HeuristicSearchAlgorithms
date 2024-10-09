@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using System.Collections;
 
+//for SIMULATED ANNEALING - edited: Alimurung F2
+
 namespace ACT4
 {
     public partial class Form1 : Form
@@ -96,6 +98,12 @@ namespace ACT4
             }
         }
 
+        //added
+        private double getTemp(int hValue)
+        {
+            return Math.Pow(Math.E, -hValue / (moveCounter + 1));
+        }
+
         private SixState randomSixState()
         {
             Random r = new Random();
@@ -160,6 +168,8 @@ namespace ACT4
             ArrayList bestMoves = new ArrayList();
             int bestHeuristicValue = heuristicTable[0, 0];
 
+            Random rand = new Random();
+
             for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < n; j++)
@@ -170,7 +180,8 @@ namespace ACT4
                         bestMoves.Clear();
                         if (currentState.Y[i] != j)
                             bestMoves.Add(new Point(i, j));
-                    } else if (bestHeuristicValue == heuristicTable[i,j])
+                    } else if (bestHeuristicValue == heuristicTable[i,j]) || 
+                            rand.NextDouble() <= getTemp(heuristicTable[i, j])
                     {
                         if (currentState.Y[i] != j)
                             bestMoves.Add(new Point(i, j));
